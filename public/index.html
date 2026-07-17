@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<div class="pitch-bg" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1 class="masthead-title">Boletim<span class="masthead-title-accent">Tático</span></h1>
+    <p class="masthead-sub">Preencha os dados da partida abaixo. Quanto mais contexto real você der — forma recente, desfalques, confrontos anteriores — mais confiável fica o boletim.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="card form-card" aria-label="Dados da partida">
+    <h2 class="section-title"><span class="section-num">01</span> Escalação da análise</h2>
+
+    <form id="match-form">
+      <div class="grid two">
+        <label class="field">
+          <span>Time da casa *</span>
+          <input type="text" name="timeCasa" required placeholder="Ex: Flamengo">
+        </label>
+        <label class="field">
+          <span>Time visitante *</span>
+          <input type="text" name="timeFora" required placeholder="Ex: Palmeiras">
+        </label>
+      </div>
+
+      <div class="grid three">
+        <label class="field">
+          <span>Competição</span>
+          <input type="text" name="competicao" placeholder="Ex: Brasileirão Série A">
+        </label>
+        <label class="field">
+          <span>Data</span>
+          <input type="date" name="data">
+        </label>
+        <label class="field">
+          <span>Local</span>
+          <input type="text" name="local" placeholder="Ex: Maracanã, Rio de Janeiro">
+        </label>
+      </div>
+
+      <div class="grid two">
+        <label class="field">
+          <span>Forma recente — time da casa</span>
+          <input type="text" name="formaRecenteCasa" placeholder="Ex: V-V-E-D-V (últimos 5 jogos)">
+        </label>
+        <label class="field">
+          <span>Forma recente — time visitante</span>
+          <input type="text" name="formaRecenteFora" placeholder="Ex: D-E-V-V-D (últimos 5 jogos)">
+        </label>
+      </div>
+
+      <div class="grid two">
+        <label class="field">
+          <span>Desfalques — time da casa</span>
+          <input type="text" name="desfalquesCasa" placeholder="Nomes separados por vírgula, se houver">
+        </label>
+        <label class="field">
+          <span>Desfalques — time visitante</span>
+          <input type="text" name="desfalquesFora" placeholder="Nomes separados por vírgula, se houver">
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Histórico de confrontos diretos</span>
+        <input type="text" name="historicoConfrontos" placeholder="Ex: últimos 3 jogos entre os times, 2 vitórias do mandante e 1 empate">
+      </label>
+
+      <label class="field">
+        <span>Observações adicionais</span>
+        <textarea name="observacoesAdicionais" rows="3" placeholder="Clima, motivação (final, rebaixamento), desgaste físico, mudança de técnico, etc."></textarea>
+      </label>
+
+      <button type="submit" class="btn-submit" id="submit-btn">
+        <span>Gerar boletim</span>
+      </button>
+    </form>
+  </section>
+
+  <section class="card analysis-card" id="analysis-card" aria-label="Análise em andamento" hidden>
+    <h2 class="section-title"><span class="section-num">·</span> Analisando a partida</h2>
+
+    <div class="progress-track" aria-hidden="true">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <p class="stage-label" id="stage-label">Iniciando...</p>
+
+    <div class="analysis-body">
+      <div class="scene-frame">
+        <canvas id="scene-3d"></canvas>
+      </div>
+      <div class="thinking-feed" id="thinking-feed" aria-live="polite"></div>
+    </div>
+
+    <p class="analysis-note">A demora aqui é real: o modelo está de fato gerando a análise, isso não é uma barra de progresso artificial.</p>
+  </section>
+
+  <section class="card result-card" id="result-card" aria-label="Resultado da previsão" hidden>
+    <h2 class="section-title"><span class="section-num">02</span> Súmula da partida</h2>
+
+    <div id="result-content"></div>
+
+    <button type="button" class="btn-download" id="download-btn">
+      <span>Baixar boletim (PNG)</span>
+    </button>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite"></div>
+
+</main>
+
+<footer class="foot">
+  <p>Ferramenta de análise probabilística baseada em IA. Não é recomendação de aposta nem garantia de resultado.</p>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
